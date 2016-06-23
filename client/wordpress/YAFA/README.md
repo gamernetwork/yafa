@@ -11,7 +11,7 @@ Drop ads into the same containers as DFP ads and call the get_ad(); method for y
 ```
 <div>
   <?php if(function_exists("get_yafa")){echo get_yafa()->get_ad("300x250");} ?>
-  <div class="advert-container" data-dfp-id="VRFocus_Desktop_Homepage_MPU" data-dfp-sizes="300x250" id="div-ga-VRFocus_Desktop_Homepage_MPU"></div>
+  <div class="advert-container" data-dfp-id="VRFocus_Desktop_Homepage_MPU" data-dfp-sizes="300x250"></div>
 </div>
 ```
 
