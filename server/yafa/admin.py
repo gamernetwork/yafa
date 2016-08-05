@@ -33,9 +33,9 @@ class TimeFilter(admin.SimpleListFilter):
 
 
 class AdvertAdmin(admin.ModelAdmin):
-    list_display = ['name', 'active', 'start_date', 'end_date', 'tag_list']
+    list_display = ['name', 'site', 'active', 'start_date', 'end_date', 'tag_list']
     list_editable = ['active',]
-    list_filter = ['active', 'tags', TimeFilter]
+    list_filter = ['site', 'active', 'tags', TimeFilter]
 
     def get_queryset(self, request):
         return super(AdvertAdmin, self).get_queryset(request).prefetch_related('tags')
