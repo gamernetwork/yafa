@@ -10,6 +10,8 @@ from hashids import Hashids
 
 from random import choice, sample
 
+from django.conf import settings
+
 def all(request, site):
     ads = Advert.objects.filter(
         site__slug = site,
@@ -17,14 +19,25 @@ def all(request, site):
         active=True
     )
     
-    tags = filter(
+    tag_slugs = filter(
         lambda x: x != '',
         request.GET.get('tags', default='').split(',')
     )
-    if len(tags) > 0:
-        ads = ads.filter( tags__slug__in = tags )
 
-    zones = Zone.objects.all()
+    if len(tag_slugs) > 0:
+        # get ancestors of all selected tags
+        # e.g. if I ask for 'UK' ads, I want all ads targeted to 'UK', 'Europe' and 'Everywhere'
+        cloud = set()
+        for tag_slug in tag_slugs:
+            try:
+                tag = HierarchicalTag.objects.get(slug=tag_slug)
+                cloud.add(tag)
+                cloud.update(tag.get_ancestors())
+            except HierarchicalTag.DoesNotExist, e:
+                if settings.DEBUG:
+                    raise e
+
+        ads = ads.filter( tags__in = cloud )
 
     ad_manifest = {}
     for ad in ads:
@@ -41,7 +54,10 @@ def all(request, site):
     # TODO make this weighted or priority driven
     sample_size = int(request.GET.get('limit', '1'))
     for zone in ad_manifest.keys():
-        ad_manifest[zone] = sample(ad_manifest[zone], sample_size)
+        ad_manifest[zone] = sample(
+            ad_manifest[zone],
+            min(sample_size, len(ad_manifest[zone])) # sample > population will result in error
+        )
 
     #res = HttpResponse(serializers.serialize('json', ad_manifest), content_type='application/json')
     res = JsonResponse(ad_manifest, safe=False)
