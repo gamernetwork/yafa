@@ -5,14 +5,14 @@ from taggit.managers import TaggableManager
 from treebeard.mp_tree import MP_Node
 
 class Site(models.Model):
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True)
     url = models.CharField(max_length=2083)
 
     def __str__(self):
         return self.slug
 
 class Zone(models.Model):
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True)
 
     def __str__(self):
         return self.slug
