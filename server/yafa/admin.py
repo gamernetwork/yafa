@@ -49,6 +49,8 @@ class AdvertAdmin(admin.ModelAdmin):
 
     form = AdvertForm
 
+    save_as = True
+
     # tag prefetching to save on database queries
     def get_queryset(self, request):
         return super(AdvertAdmin, self).get_queryset(request).prefetch_related('tags')
