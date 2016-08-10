@@ -8,7 +8,7 @@ because adblock.
 
 ## Server
 
-See [server/README.md].
+See [server/README.md](server/README.md).
 
 ## Client
 
@@ -69,7 +69,7 @@ Install a caching proxy in your network and go via that. Or roll your own DB-bac
 
 #### Wordpress
 
-See [github.com/gamernetwork/wp-yafa] for a handy plugin that does all this for
+See https://github.com/gamernetwork/wp-yafa for a handy plugin that does all this for
 you.
 
 
